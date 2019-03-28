@@ -1,0 +1,31 @@
+import pymysql
+import cgi
+
+conn=pymysql.connect(host='localhost',user='root',password='1234',db='mystockmarket')
+a=conn.cursor()
+print("content-text:text/html\r\n\r\n")
+res=cgi.FieldStorage()
+catid=str(res.getvalue('catid'))
+sql="select * from categoryreg where catid="+catid;
+display=a.execute(sql)
+data=a.fetchall()
+for i in data:
+	print("<html>")
+	print("<head>")
+	print("<title>My Stock Market</title>")
+	print("</head>")
+	print("<body>")
+	print("<form action=CategoryUpDe1.py>")
+	print("<center>")
+	print("<table border=1>")
+	print("<caption>Category Update / Delete Form</caption>")
+	print("<tr><td>Category ID</td><td><input type=text name=cid value="+str(i[0])+" readonly=true></td></tr>")
+	print("<tr><td>Category Name</td><td><input type=text name=cnm value="+str(i[1])+"></td></tr>")
+	print("<tr><td>Category Image</td><td><img src="+str(i[2])+" height=100 width=100><input type=file name=cicon></td></tr>")
+	print("<tr><td>Category Desc</td><td><textarea name=cdes rows=5 cols=30>"+str(i[3])+"</textarea></td></tr>")
+	print("<tr><td><input type=submit name=btn value=Update></td><td><input type=submit name=btn value=Delete></td></tr>")
+	print("</table>")
+	print("</center>")
+	print("</form>")
+	print("</body>")
+	print("</html>")
